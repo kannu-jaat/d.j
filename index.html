@@ -703,6 +703,15 @@ setInterval(() => {
 
 const searchInput = document.getElementById('searchInput');
 const suggestionsEl = document.getElementById('suggestions');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+// Fix for Search Clear Button
+clearSearchBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  suggestionsEl.style.display = 'none';
+  document.getElementById('results').innerHTML = '';
+});
+
 searchInput.addEventListener('input', debounce(() => { const q = searchInput.value.trim(); if(q) getSuggestions(q); else suggestionsEl.style.display='none'; }, 300));
 document.getElementById('searchBtn').addEventListener('click', doSearch);
 searchInput.addEventListener('keydown', (e)=> e.key==='Enter' && doSearch());
@@ -848,7 +857,7 @@ function renderRelatedVideos(items, prepend = false){
       <div class="meta"><h4>${escapeHtml(sn.title)}</h4><div class="small">${escapeHtml(sn.channelTitle)}</div></div>
       <div class="actions">
         <button class="btn" onclick="cueToDeck('left','${id}')">Left</button>
-        <button class="btn" onclick="right','${id}')">Right</button>
+        <button class="btn" onclick="cueToDeck('right','${id}')">Right</button>
         <button class="btn" onclick="addToPlaylist({id:'${id}',title:\`${escapeHtml(sn.title)}\`})">+ Playlist</button>
       </div>`;
     if (prepend) grid.insertBefore(card, grid.firstChild); 
