@@ -256,11 +256,10 @@
                     Speed: 
                     <select id="fadeSpeed">
                         <option value="0">0s</option>
-                        <option value="0.1">0.1s</option>
-                        <option value="0.25" selected>0.25s</option>
                         <option value="0.5">0.5s</option>
-                        <option value="1">1s</option>
-<option value="2">2s</option>
+                        <option value="1" selected>1s</option>
+                        <option value="2">2s</option>
+                        <option value="3">3s</option>
                     </select>
                 </div>
                 <button class="btn" onclick="fadeTo(0)">Fade Left ⬅️</button>
@@ -433,16 +432,18 @@
             if (data && data[1]) renderSuggestions(data[1].map(item => item[0]));
         };
 
-        // YouTube IFrame API Initialization
+        // YouTube IFrame API Initialization (🔥 NOCOOKIE METHOD APPLIED 🔥)
         function onYouTubeIframeAPIReady(){ 
             players.left = new YT.Player('leftPlayer',{ 
+                host: 'https://www.youtube-nocookie.com', // Nocookie Method
                 height:'300', width:'100%', 
-                playerVars:{ controls:1, rel:0, iv_load_policy:3, modestbranding:1 }, 
+                playerVars:{ controls:1, rel:0, iv_load_policy:3, modestbranding:1, autoplay:1 }, 
                 events:{ 'onStateChange': (e)=>handleState('left',e) } 
             }); 
             players.right = new YT.Player('rightPlayer',{ 
+                host: 'https://www.youtube-nocookie.com', // Nocookie Method
                 height:'300', width:'100%', 
-                playerVars:{ controls:1, rel:0, iv_load_policy:3, modestbranding:1 }, 
+                playerVars:{ controls:1, rel:0, iv_load_policy:3, modestbranding:1, autoplay:1 }, 
                 events:{ 'onStateChange': (e)=>handleState('right',e) } 
             }); 
             document.getElementById('leftUrl').addEventListener('input', debounce(() => loadFromUrl('left'), 500)); 
@@ -857,12 +858,10 @@
             B: { play: false, fade: false }
         };
 
-        // NEW: Toggle and Local Storage Logic
         let autoMixEnabled = true;
         const autoMixBtn = document.getElementById('autoMixBtn');
         const fadeSpeedSelect = document.getElementById('fadeSpeed');
 
-        // Load saved preferences
         if (localStorage.getItem('fadeSpeed')) {
             fadeSpeedSelect.value = localStorage.getItem('fadeSpeed');
         }
@@ -870,28 +869,24 @@
             autoMixEnabled = localStorage.getItem('autoMixState') === 'true';
         }
 
-        // Update Auto-Mix UI
         function updateAutoMixUI() {
             autoMixBtn.textContent = `Auto-Mix: ${autoMixEnabled ? 'ON' : 'OFF'}`;
             autoMixBtn.style.color = autoMixEnabled ? 'var(--accent)' : 'var(--warn)';
         }
         updateAutoMixUI();
 
-        // Save Speed on Change
         fadeSpeedSelect.addEventListener('change', () => {
             localStorage.setItem('fadeSpeed', fadeSpeedSelect.value);
         });
 
-        // Toggle Auto-Mix on Click
         autoMixBtn.addEventListener('click', () => {
             autoMixEnabled = !autoMixEnabled;
             localStorage.setItem('autoMixState', autoMixEnabled);
             updateAutoMixUI();
         });
 
-        // Auto-Mix Timer Loop
         setInterval(() => {
-            if (!autoMixEnabled) return; // अगर Auto-Mix OFF है, तो आगे का कोड काम नहीं करेगा
+            if (!autoMixEnabled) return; 
 
             // YouTube Left
             try {
